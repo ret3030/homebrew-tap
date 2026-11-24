@@ -8,14 +8,13 @@ cask "pomo" do
   homepage "https://github.com/ret3030/pomo"
 
   depends_on arch: :arm64
-  depends_on macos: ">= :sonoma"
+  depends_on macos: :sonoma
 
   app "Pomo.app"
 
   # Pomo is signed ad hoc, not notarized, so Gatekeeper would block the first launch.
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Pomo.app"]
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/Pomo.app"]
   end
 
   uninstall quit: "com.ret3030.pomo"
